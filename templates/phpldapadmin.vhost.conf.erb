@@ -22,8 +22,11 @@
 
         #ErrorLog ${APACHE_LOG_DIR}/error.log
         #CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
-        ErrorLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::error'
-        CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::access' combined_sp_sp
+  #ErrorLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::error'
+  ErrorLog  syslog:local3
+  #CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::access' combined_sp=!forwarded
+  #CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::access' combined_sp_proxy env=forwarded
+  CustomLog '|/usr/bin/logger -p local3.info -t ::apache::<%= scope.lookupvar('apache2::env') -%>::access' combined_sp_proxy
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
